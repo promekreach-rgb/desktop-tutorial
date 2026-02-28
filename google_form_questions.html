@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google Form: First-Year Students & AI Plagiarism Tools</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4ff;
+      min-height: 100vh;
+      padding: 30px 16px;
+    }
+    .page-title {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .page-title h1 {
+      font-size: 1.5rem;
+      color: #3b3b5c;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .page-title p {
+      color: #6b6b8a;
+      font-size: 0.9rem;
+    }
+    .form-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(80,80,180,0.10);
+      max-width: 720px;
+      margin: 0 auto 24px auto;
+      overflow: hidden;
+    }
+    .form-header {
+      background: linear-gradient(135deg, #6c63ff 0%, #4f46e5 100%);
+      padding: 28px 32px 22px 32px;
+      color: white;
+    }
+    .form-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .form-header p {
+      font-size: 0.88rem;
+      opacity: 0.88;
+      line-height: 1.5;
+    }
+    .questions-list {
+      padding: 24px 32px 28px 32px;
+    }
+    .question-block {
+      border: 1.5px solid #e8e8f7;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 18px;
+      transition: border-color 0.2s;
+    }
+    .question-block:hover { border-color: #6c63ff; }
+    .q-number {
+      display: inline-block;
+      background: #6c63ff;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 2px 11px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .q-type {
+      display: inline-block;
+      background: #f0eeff;
+      color: #6c63ff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border-radius: 20px;
+      padding: 2px 10px;
+      margin-left: 6px;
+      letter-spacing: 0.4px;
+    }
+    .q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2d2d4e;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .options-list li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.9rem;
+      color: #44445a;
+    }
+    .radio-mock, .checkbox-mock {
+      width: 17px;
+      height: 17px;
+      border: 2px solid #9b96e8;
+      flex-shrink: 0;
+    }
+    .radio-mock { border-radius: 50%; }
+    .checkbox-mock { border-radius: 4px; }
+    .scale-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .scale-label {
+      font-size: 0.8rem;
+      color: #7878a0;
+    }
+    .scale-numbers {
+      display: flex;
+      gap: 6px;
+    }
+    .scale-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #c5c3ef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      color: #5a5a80;
+      font-weight: 600;
+    }
+    .textarea-mock {
+      width: 100%;
+      height: 60px;
+      border: 1.5px solid #d8d8ee;
+      border-radius: 8px;
+      background: #fafafa;
+      margin-top: 6px;
+      padding: 10px;
+      font-size: 0.85rem;
+      color: #aaa;
+      resize: none;
+    }
+    .instructions {
+      background: #f7f7ff;
+      border: 1.5px dashed #b0aee8;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 0 32px 24px 32px;
+    }
+    .instructions h3 {
+      font-size: 0.88rem;
+      color: #4f46e5;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .instructions ol {
+      padding-left: 18px;
+      font-size: 0.84rem;
+      color: #55557a;
+      line-height: 1.9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-title">
+    <h1>📋 Google Form Blueprint</h1>
+    <p>Copy these 6 questions into Google Forms — format type included for each question.</p>
+  </div>
+
+  <div class="form-card">
+    <div class="form-header">
+      <h2>First-Year College Students & AI Plagiarism Detection Tools</h2>
+      <p>This survey explores the academic challenges faced by first-year college students and examines how AI-powered plagiarism protection tools could help address them. Your responses are anonymous and will only be used for research purposes.</p>
+    </div>
+
+    <div class="questions-list">
+
+      <!-- Q1 -->
+      <div class="question-block">
+        <span class="q-number">Q1</span><span class="q-type">Multiple Choice</span>
+        <p class="q-text">As a first-year college student, which academic challenge do you find most difficult to manage?</p>
+        <ul class="options-list">
+          <li><span class="radio-mock"></span> Properly citing sources and avoiding accidental plagiarism</li>
+          <li><span class="radio-mock"></span> Understanding what counts as plagiarism vs. paraphrasing</li>
+          <li><span class="radio-mock"></span> Managing time and meeting deadlines</li>
+          <li><span class="radio-mock"></span> Writing long academic papers for the first time</li>
+          <li><span class="radio-mock"></span> Other (specify)</li>
+        </ul>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-block">
+        <span class="q-number">Q2</span><span class="q-type">Multiple Choice</span>
+        <p class="q-text">Have you ever submitted work that was flagged for plagiarism — even unintentionally?</p>
+        <ul class="options-list">
+          <li><span class="radio-mock"></span> Yes, and I was penalized</li>
+          <li><span class="radio-mock"></span> Yes, but it was resolved without penalty</li>
+          <li><span class="radio-mock"></span> No, but I was worried it might happen</li>
+          <li><span class="radio-mock"></span> No, I have never experienced this</li>
+        </ul>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-block">
+        <span class="q-number">Q3</span><span class="q-type">Checkbox (Select all that apply)</span>
+        <p class="q-text">Which of the following features of an AI plagiarism protection tool would you find most helpful? <em>(Select all that apply)</em></p>
+        <ul class="options-list">
+          <li><span class="checkbox-mock"></span> Real-time detection of plagiarized or improperly cited content</li>
+          <li><span class="checkbox-mock"></span> Suggestions for how to paraphrase or rephrase copied text</li>
+          <li><span class="checkbox-mock"></span> Auto-formatting of citations (APA, MLA, Chicago, etc.)</li>
+          <li><span class="checkbox-mock"></span> Educational feedback explaining why a passage is flagged</li>
+          <li><span class="checkbox-mock"></span> Similarity score before final submission</li>
+          <li><span class="checkbox-mock"></span> Integration with common writing platforms (Google Docs, Word)</li>
+        </ul>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-block">
+        <span class="q-number">Q4</span><span class="q-type">Linear Scale (1–5)</span>
+        <p class="q-text">On a scale of 1 to 5, how confident are you in your ability to correctly cite sources and avoid plagiarism in academic work?</p>
+        <div class="scale-row">
+          <span class="scale-label">1 (Not confident at all)</span>
+          <div class="scale-numbers">
+            <div class="scale-num">1</div>
+            <div class="scale-num">2</div>
+            <div class="scale-num">3</div>
+            <div class="scale-num">4</div>
+            <div class="scale-num">5</div>
+          </div>
+          <span class="scale-label">5 (Very confident)</span>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-block">
+        <span class="q-number">Q5</span><span class="q-type">Multiple Choice</span>
+        <p class="q-text">Do you believe an AI plagiarism protection tool would positively impact your academic integrity and writing quality?</p>
+        <ul class="options-list">
+          <li><span class="radio-mock"></span> Definitely yes — it would greatly help me improve</li>
+          <li><span class="radio-mock"></span> Probably yes — it could be a useful guide</li>
+          <li><span class="radio-mock"></span> Neutral — I'm not sure it would make a difference</li>
+          <li><span class="radio-mock"></span> Probably not — I prefer to learn on my own</li>
+          <li><span class="radio-mock"></span> Definitely not — it may encourage over-reliance on tools</li>
+        </ul>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-block">
+        <span class="q-number">Q6</span><span class="q-type">Paragraph (Open-ended)</span>
+        <p class="q-text">In your own words, describe one specific way an AI plagiarism protection tool could have helped you — or could help you in the future — with a writing challenge you faced as a first-year student.</p>
+        <textarea class="textarea-mock" disabled placeholder="Your answer..."></textarea>
+      </div>
+
+    </div>
+
+    <div class="instructions">
+      <h3>📌 How to Add These to Google Forms</h3>
+      <ol>
+        <li>Go to <strong>forms.google.com</strong> and click <strong>"+ Blank"</strong> to create a new form.</li>
+        <li>Set the form title to: <em>"First-Year College Students & AI Plagiarism Detection Tools"</em></li>
+        <li>Add each question using the <strong>"+"</strong> button, selecting the question type shown above.</li>
+        <li>For Q3, enable <strong>"Checkbox"</strong> type; for Q4, select <strong>"Linear scale"</strong> (1–5).</li>
+        <li>For Q6, use <strong>"Paragraph"</strong> type for a longer open-ended response.</li>
+        <li>Enable <strong>"Required"</strong> toggle on all questions you want mandatory.</li>
+      </ol>
+    </div>
+
+  </div>
+
+</body>
+</html>

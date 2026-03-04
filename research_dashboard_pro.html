@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & Academic Integrity — Research Analysis Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --navy:    #0d1b2a;
+  --ink:     #1c2b3a;
+  --steel:   #2e4057;
+  --slate:   #4a6572;
+  --silver:  #8fa3b0;
+  --cloud:   #d8e4ec;
+  --frost:   #eef4f8;
+  --white:   #ffffff;
+  --gold:    #b08d57;
+  --gold-lt: #d4b483;
+  --red:     #c0392b;
+  --teal:    #1a7a7a;
+  --green:   #2e7d4f;
+  --border:  #dce8ef;
+  --shadow:  rgba(13,27,42,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--frost);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── PRINT-LIKE PAGE WRAPPER ─── */
+.page {
+  max-width: 1100px;
+  margin: 40px auto;
+  background: var(--white);
+  box-shadow: 0 4px 40px var(--shadow), 0 1px 4px rgba(13,27,42,0.06);
+}
+
+/* ─── COVER ─── */
+.cover {
+  background: var(--navy);
+  padding: 72px 80px 60px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-lt), var(--gold));
+}
+.cover-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cover-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+}
+.cover h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--white);
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+.cover h1 em {
+  font-style: italic;
+  color: var(--gold-lt);
+}
+.cover-subtitle {
+  font-size: 15px;
+  color: var(--silver);
+  font-weight: 300;
+  margin-bottom: 48px;
+  max-width: 580px;
+  line-height: 1.7;
+}
+.cover-meta {
+  display: flex;
+  gap: 40px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.cover-meta-item label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--silver);
+  display: block;
+  margin-bottom: 4px;
+}
+.cover-meta-item span {
+  font-size: 13px;
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* ─── CONTENT AREA ─── */
+.content { padding: 0 80px; }
+
+/* ─── SECTION HEADERS ─── */
+.section { margin: 60px 0; }
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--navy);
+}
+.section-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.3px;
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--slate);
+  margin-bottom: 28px;
+  line-height: 1.7;
+  max-width: 760px;
+}
+
+/* ─── KPI ROW ─── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.kpi {
+  padding: 24px 20px;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.kpi:last-child { border-right: none; }
+.kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.kpi:nth-child(1)::before { background: var(--navy); }
+.kpi:nth-child(2)::before { background: var(--teal); }
+.kpi:nth-child(3)::before { background: var(--gold); }
+.kpi:nth-child(4)::before { background: var(--green); }
+.kpi:nth-child(5)::before { background: var(--red); }
+.kpi:nth-child(6)::before { background: var(--steel); }
+.kpi-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.kpi-label {
+  font-size: 11px;
+  color: var(--slate);
+  line-height: 1.4;
+}
+
+/* ─── SOURCE TABLE ─── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-bottom: 32px;
+}
+.data-table thead tr {
+  background: var(--navy);
+}
+.data-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cloud);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.data-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.data-table tbody tr:hover { background: var(--frost); }
+.data-table tbody tr:last-child { border-bottom: none; }
+.data-table td {
+  padding: 13px 16px;
+  color: var(--ink);
+  vertical-align: top;
+}
+.data-table td:first-child { font-weight: 600; color: var(--navy); }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+.tbl-wrap {
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+.tbl-caption {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--slate);
+  padding: 10px 16px;
+  background: var(--frost);
+  border-bottom: 1px solid var(--border);
+}
+
+/* TAGS */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.tag-sr   { background: #e8f0f8; color: #1a4480; }
+.tag-mm   { background: #fef3e2; color: #8b5e00; }
+.tag-qt   { background: #e6f4ea; color: #1e5631; }
+.tag-ind  { background: #f3e8ff; color: #5a1e8c; }
+.tag-high { background: #e6f4ea; color: #1e5631; }
+.tag-med  { background: #fef3e2; color: #8b5e00; }
+.tag-low  { background: #fdecea; color: #8b1a1a; }
+
+/* ─── CHART CARDS ─── */
+.charts-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.charts-3col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.chart-card {
+  border: 1px solid var(--border);
+  background: var(--white);
+}
+.chart-card.full { grid-column: 1 / -1; }
+.chart-head {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.chart-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.chart-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.chart-body { padding: 20px; }
+.chart-wrap { position: relative; }
+.h240 { height: 240px; }
+.h300 { height: 300px; }
+.h340 { height: 340px; }
+
+/* ─── REGRESSION BLOCK ─── */
+.reg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.reg-card {
+  border: 1px solid var(--border);
+  background: var(--white);
+}
+.reg-head {
+  background: var(--navy);
+  padding: 14px 20px;
+}
+.reg-head-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.reg-body { padding: 20px; }
+.eq-block {
+  background: var(--frost);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--navy);
+  padding: 16px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 2;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.stat-item {
+  background: var(--frost);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+}
+.stat-item-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+.stat-item-lbl {
+  font-size: 10px;
+  color: var(--slate);
+  letter-spacing: 0.5px;
+}
+.coef-list { list-style: none; }
+.coef-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.coef-item:last-child { border-bottom: none; }
+.coef-name { font-size: 12.5px; color: var(--ink); flex: 1; }
+.coef-dir {
+  font-size: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  margin-left: 4px;
+}
+.coef-or {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 70px;
+  text-align: right;
+}
+.coef-bar-outer {
+  width: 80px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.coef-bar-inner { height: 100%; border-radius: 2px; }
+.risk  { color: var(--red); }
+.prot  { color: var(--green); }
+
+/* ─── INSIGHTS ─── */
+.insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.insight-item {
+  padding: 24px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.insight-item:nth-child(3n) { border-right: none; }
+.insight-item:nth-child(4),
+.insight-item:nth-child(5),
+.insight-item:nth-child(6) { border-bottom: none; }
+.insight-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.insight-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.insight-body {
+  font-size: 12px;
+  color: var(--slate);
+  line-height: 1.6;
+}
+.insight-stat {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* ─── FOOTNOTE / FOOTER ─── */
+.footer {
+  margin-top: 64px;
+  padding: 28px 80px;
+  background: var(--navy);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-left {
+  font-size: 11px;
+  color: var(--silver);
+  line-height: 1.6;
+}
+.footer-right {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+/* ─── DIVIDER ─── */
+.rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
+.rule-bold {
+  border: none;
+  border-top: 2px solid var(--navy);
+  margin: 40px 0;
+}
+
+/* ─── METHODOLOGY NOTE ─── */
+.method-note {
+  background: var(--frost);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px;
+  font-size: 12px;
+  color: var(--slate);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.method-note strong { color: var(--navy); }
+
+@media (max-width: 900px) {
+  .content { padding: 0 32px; }
+  .cover { padding: 48px 32px 40px; }
+  .charts-2col, .charts-3col, .reg-grid, .kpi-row { grid-template-columns: 1fr; }
+  .insights-grid { grid-template-columns: 1fr; }
+  .footer { padding: 24px 32px; flex-direction: column; gap: 12px; }
+  .cover h1 { font-size: 36px; }
+  .insight-item:nth-child(3n) { border-right: none; }
+  .insight-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .kpi { border-right: none; border-bottom: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ COVER ══ -->
+  <div class="cover">
+    <div class="cover-eyebrow">Undergraduate Research Paper · 2025</div>
+    <h1>AI Strengthening<br><em>Academic Integrity</em></h1>
+    <p class="cover-subtitle">A comprehensive statistical analysis and cross-source synthesis of five peer-reviewed studies examining how artificial intelligence tools reshape the landscape of academic honesty, plagiarism detection, and ethical conduct in higher education.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <label>Total Sources</label>
+        <span>5 Articles</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Publication Year</label>
+        <span>All 2025</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Largest Sample</label>
+        <span>4,811 Students</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Geographic Scope</label>
+        <span>Global</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Research Design</label>
+        <span>Mixed Methods</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ SECTION 1: KEY METRICS ══ -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <span class="section-title">Aggregate Key Metrics</span>
+      </div>
+      <p class="section-desc">The following indicators are derived from cross-source analysis of all five studies included in this review. Figures represent the most statistically robust and frequently cited data points relevant to the research topic.</p>
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-val">4,811</div>
+          <div class="kpi-label">Largest student sample<br><span style="color:var(--silver);font-size:10px">Torres-Diaz et al. (2025)</span></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">95.5%</div>
+          <div class="kpi-label">Students using AI for academic work<br><span style="color:var(--silver);font-size:10px">Torres-Diaz et al. (2025)</span></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">71.3%</div>
+          <div class="kpi-label">Students preferring ChatGPT<br><span style="color:var(--silver);font-size:10px">Torres-Diaz et al. (2025)</span></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">92%</div>
+          <div class="kpi-label">Best detection accuracy (Copyleaks)<br><span style="color:var(--silver);font-size:10px">Leong & Zhang (2025)</span></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">43%</div>
+          <div class="kpi-label">Educators concerned about false positives<br><span style="color:var(--silver);font-size:10px">Leong & Zhang (2025)</span></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">16K+</div>
+          <div class="kpi-label">Institutions using Turnitin globally<br><span style="color:var(--silver);font-size:10px">Chechitelli / Turnitin (2025)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 2: SOURCE OVERVIEW ══ -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <span class="section-title">Source Overview & Methodological Summary</span>
+      </div>
+      <p class="section-desc">All five sources were published in 2025 and represent a diverse range of methodological approaches, geographic contexts, and evidence types — collectively providing a robust, multi-perspective foundation for the research argument.</p>
+
+      <div class="tbl-wrap">
+        <div class="tbl-caption">Table 2.1 — Master Source Comparison Matrix</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Author(s)</th>
+              <th>Journal / Publisher</th>
+              <th>Study Type</th>
+              <th>Sample</th>
+              <th>Geographic Scope</th>
+              <th>Core Finding</th>
+              <th>Evidence Strength</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono" style="color:var(--gold)">S1</td>
+              <td>Balalle & Pannilage</td>
+              <td style="font-size:11px">Social Sciences & Humanities Open<br><span style="color:var(--silver)">Elsevier · DOI: 10.1016/j.ssaho.2025.101299</span></td>
+              <td><span class="tag tag-sr">Sys. Review</span></td>
+              <td class="mono">25 articles<br>2,134 participants</td>
+              <td>Global</td>
+              <td style="font-size:11.5px">AI has dual role; integrity culture essential</td>
+              <td><span class="tag tag-high">High</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--gold)">S2</td>
+              <td>Leong & Zhang</td>
+              <td style="font-size:11px">ASM Science Journal<br><span style="color:var(--silver)">DOI: 10.32802/asmscj.2025.1918</span></td>
+              <td><span class="tag tag-mm">Mixed Method</span></td>
+              <td class="mono">200 samples<br>150 surveys</td>
+              <td>Malaysia / Singapore</td>
+              <td style="font-size:11.5px">Deep learning tools outperform traditional detection by 3×</td>
+              <td><span class="tag tag-med">Medium</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--gold)">S3</td>
+              <td>K.B. & O.E.-G.</td>
+              <td style="font-size:11px">Information (MDPI)<br><span style="color:var(--silver)">DOI: 10.3390/info16040296 · 40,810 views</span></td>
+              <td><span class="tag tag-sr">Sys. Review</span></td>
+              <td class="mono">41 studies</td>
+              <td>United States</td>
+              <td style="font-size:11.5px">Current tools inadequate; assessment redesign required</td>
+              <td><span class="tag tag-high">High</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--gold)">S4</td>
+              <td>Torres-Diaz et al.</td>
+              <td style="font-size:11px">Int. Journal for Educational Integrity<br><span style="color:var(--silver)">Springer · DOI: 10.1007/s40979-025-00209-3</span></td>
+              <td><span class="tag tag-qt">Quantitative</span></td>
+              <td class="mono">4,811 students<br>8 universities</td>
+              <td>Ecuador / Latin America</td>
+              <td style="font-size:11.5px">AI literacy significantly reduces plagiarism (OR = 0.911)</td>
+              <td><span class="tag tag-high">High</span></td>
+            </tr>
+            <tr>
+              <td class="mono" style="color:var(--gold)">S5</td>
+              <td>Chechitelli / Turnitin</td>
+              <td style="font-size:11px">Turnitin Official Blog<br><span style="color:var(--silver)">Industry Report · August 2025</span></td>
+              <td><span class="tag tag-ind">Industry</span></td>
+              <td class="mono">16,000+ institutions</td>
+              <td>Global</td>
+              <td style="font-size:11.5px">AI bypassers are the newest, fastest-growing threat</td>
+              <td><span class="tag tag-med">Medium</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 3: DETECTION TOOLS ══ -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <span class="section-title">Plagiarism Detection Tool Performance Analysis</span>
+      </div>
+      <p class="section-desc">Source: Leong & Zhang (2025). Analysis conducted across 200 content samples including 50 direct copies, 75 paraphrased versions, and 75 AI-generated texts. Three tools evaluated: Turnitin (keyword-matching), Grammarly (hybrid AI + rules), and Copyleaks (deep learning + NLP).</p>
+
+      <div class="method-note">
+        <strong>Methodological Note:</strong> Detection rates are expressed as percentages of correctly identified plagiarised content per content category. Speed is measured as average report generation time in seconds. False positive rates reflect the percentage of legitimate work incorrectly flagged as plagiarised. Sample sizes: n = 200 (accuracy/speed), n = 50 AI texts (AI detection), n = 150 surveys (user satisfaction).
+      </div>
+
+      <div class="tbl-wrap" style="margin-bottom:28px">
+        <div class="tbl-caption">Table 3.1 — Complete Detection Performance Matrix (Leong & Zhang, 2025)</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tool</th><th>Detection Approach</th><th>Overall Accuracy</th><th>Direct Copy</th><th>Paraphrase</th><th>AI-Generated</th><th>Speed (sec)</th><th>False Positives</th><th>Non-Textual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Turnitin</td>
+              <td>Keyword Matching</td>
+              <td class="mono">85%</td>
+              <td class="mono">85%</td>
+              <td class="mono" style="color:var(--red)">40%</td>
+              <td class="mono" style="color:var(--red)">25%</td>
+              <td class="mono">10s</td>
+              <td class="mono">5%</td>
+              <td style="font-size:11px;color:var(--slate)">Limited</td>
+            </tr>
+            <tr>
+              <td>Grammarly</td>
+              <td>Hybrid (AI + Rule-Based)</td>
+              <td class="mono">82%</td>
+              <td class="mono">82%</td>
+              <td class="mono" style="color:var(--gold)">45%</td>
+              <td class="mono" style="color:var(--red)">30%</td>
+              <td class="mono">8s</td>
+              <td class="mono">6%</td>
+              <td style="font-size:11px;color:var(--slate)">Limited</td>
+            </tr>
+            <tr style="background:var(--frost)">
+              <td><strong>Copyleaks ★</strong></td>
+              <td>Deep Learning + NLP</td>
+              <td class="mono" style="color:var(--green);font-weight:600">92%</td>
+              <td class="mono" style="color:var(--green)">92%</td>
+              <td class="mono" style="color:var(--green)">75%</td>
+              <td class="mono" style="color:var(--green)">75%</td>
+              <td class="mono">12s</td>
+              <td class="mono">8%</td>
+              <td style="font-size:11px;color:var(--slate)">None</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="charts-2col">
+        <div class="chart-card">
+          <div class="chart-head">
+            <div class="chart-label">Figure 3.1 — Leong & Zhang (2025)</div>
+            <div class="chart-title">Detection Accuracy by Content Type</div>
+          </div>
+          <div class="chart-body">
+            <div class="chart-wrap h240"><canvas id="c1"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div class="chart-label">Figure 3.2 — Leong & Zhang (2025)</div>
+            <div class="chart-title">Multi-Dimension Tool Comparison</div>
+          </div>
+          <div class="chart-body">
+            <div class="chart-wrap h240"><canvas id="c2"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tbl-wrap" style="margin-bottom:28px">
+        <div class="tbl-caption">Table 3.2 — AI Detection Rate by Content Complexity (Leong & Zhang, 2025)</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Content Type</th><th>Detection Rate</th><th>Complexity</th><th>Research Implication</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Direct Copy</td>
+              <td class="mono" style="color:var(--green)">95%</td>
+              <td><span class="tag tag-high">Low</span></td>
+              <td style="font-size:12px">Traditional tools remain effective for verbatim copying</td>
+            </tr>
+            <tr>
+              <td>Simple Paraphrase</td>
+              <td class="mono" style="color:var(--teal)">78%</td>
+              <td><span class="tag tag-med">Moderate</span></td>
+              <td style="font-size:12px">AI-enhanced tools demonstrate clear advantage over keyword matching</td>
+            </tr>
+            <tr>
+              <td>Complex Paraphrase</td>
+              <td class="mono" style="color:var(--red)">52%</td>
+              <td><span class="tag tag-low">High</span></td>
+              <td style="font-size:12px">Critical detection gap — most common student evasion technique</td>
+            </tr>
+            <tr>
+              <td>AI-Generated Content</td>
+              <td class="mono" style="color:var(--gold)">70%</td>
+              <td><span class="tag tag-low">High</span></td>
+              <td style="font-size:12px">Requires deep learning architecture; traditional tools fail substantially</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-head">
+          <div class="chart-label">Figure 3.3 — Leong & Zhang (2025)</div>
+          <div class="chart-title">Accuracy vs. False Positive Rate — Trade-off Analysis</div>
+        </div>
+        <div class="chart-body">
+          <div class="chart-wrap h240"><canvas id="c3"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 4: STUDENT BEHAVIOUR ══ -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <span class="section-title">Student AI Usage Behaviour</span>
+      </div>
+      <p class="section-desc">Source: Torres-Diaz et al. (2025). Data collected from 4,811 in-person university students across eight Ecuadorian universities via validated questionnaire (Cronbach's α = 0.73). Variables measured on a 0–9 scale unless otherwise noted.</p>
+
+      <div class="charts-2col">
+        <div class="chart-card">
+          <div class="chart-head">
+            <div class="chart-label">Figure 4.1 — Torres-Diaz et al. (2025)</div>
+            <div class="chart-title">AI Tool Preference Among Students</div>
+          </div>
+          <div class="chart-body">
+            <div class="chart-wrap h260"><canvas id="c4"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div class="chart-label">Figure 4.2 — Torres-Diaz et al. (2025)</div>
+            <div class="chart-title">Mean AI Usage by Task Type (Scale 0–9)</div>
+          </div>
+          <div class="chart-body">
+            <div class="chart-wrap h260"><canvas id="c5"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tbl-wrap">
+        <div class="tbl-caption">Table 4.1 — Descriptive Statistics: AI Usage & Perception Variables (Torres-Diaz et al., 2025 · n=4,811)</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Variable</th><th>Mean (0–9)</th><th>Std. Dev.</th><th>Interpretation</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI Use for Writing Texts</td>
+              <td class="mono" style="color:var(--navy);font-weight:600">4.87</td>
+              <td class="mono">2.65</td>
+              <td style="font-size:12px">Highest mean — most prevalent AI academic task</td>
+            </tr>
+            <tr>
+              <td>AI Improves Academic Performance (perception)</td>
+              <td class="mono" style="color:var(--green);font-weight:600">5.52</td>
+              <td class="mono">2.18</td>
+              <td style="font-size:12px">Majority perceive AI as academically beneficial — reduces plagiarism risk</td>
+            </tr>
+            <tr>
+              <td>Trust in ChatGPT Information</td>
+              <td class="mono" style="color:var(--gold);font-weight:600">4.21</td>
+              <td class="mono">2.38</td>
+              <td style="font-size:12px">Moderate trust — linked to increased plagiarism risk (OR = 1.176)</td>
+            </tr>
+            <tr>
+              <td>AI Use for Mathematics</td>
+              <td class="mono">4.04</td>
+              <td class="mono">2.90</td>
+              <td style="font-size:12px">Significantly used for problem-solving tasks</td>
+            </tr>
+            <tr>
+              <td>Reporting ChatGPT Use to Professor</td>
+              <td class="mono" style="color:var(--red)">2.09</td>
+              <td class="mono">2.50</td>
+              <td style="font-size:12px">Low disclosure rate — largest predictor of plagiarism (OR = 1.223)</td>
+            </tr>
+            <tr>
+              <td>AI Use for Music Generation</td>
+              <td class="mono">1.95</td>
+              <td class="mono">2.70</td>
+              <td style="font-size:12px">Lowest academic use — marginal plagiarism predictor (OR = 1.038)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 5: REGRESSION ══ -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <span class="section-title">Binary Logistic Regression Analysis</span>
+      </div>
+      <p class="section-desc">Source: Torres-Diaz et al. (2025). Binary logistic regression was applied to identify significant predictors of self-reported plagiarism among university students. The dependent variable (plagiarism level) was dichotomised: scores 0–1 = no plagiarism (n=2,364, 49.1%); scores 2–9 = plagiarism (n=2,447, 50.9%).</p>
+
+      <div class="reg-grid">
+        <div class="reg-card">
+          <div class="reg-head">
+            <div class="reg-head-title">Model Specification & Fit Statistics</div>
+          </div>
+          <div class="reg-body">
+            <div class="eq-block">
+              log(P/1−P) = β₀<br>
+              + β₁(ReportChatGPTToProf)<br>
+              + β₂(TrustChatGPTInfo)<br>
+              + β₃(UseChatGPTAssignments)<br>
+              + β₄(UseAIImages) + β₅(UseAIMath)<br>
+              − β₆(KnowledgeOfAITools)<br>
+              − β₇(AIImprovesPerformance)<br>
+              + β₈(Age) + β₉(UseAIMusic)
+            </div>
+            <div class="stat-grid">
+              <div class="stat-item">
+                <div class="stat-item-val">788.469</div>
+                <div class="stat-item-lbl">Chi-Square (df=9, p&lt;0.001)</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-item-val">0.202</div>
+                <div class="stat-item-lbl">Nagelkerke R² (20.2% variance)</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-item-val">66.5%</div>
+                <div class="stat-item-lbl">Overall Classification Accuracy</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-item-val">0.725</div>
+                <div class="stat-item-lbl">AUC (95% CI: 0.711–0.739)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reg-card">
+          <div class="reg-head">
+            <div class="reg-head-title">Significant Predictors — Odds Ratios (OR)</div>
+          </div>
+          <div class="reg-body">
+            <ul class="coef-list">
+              <li class="coef-item">
+                <div class="coef-name">Report ChatGPT to Professor <span class="coef-dir risk">↑ Risk</span></div>
+                <div class="coef-bar-outer"><div class="coef-bar-inner" style="width:90%;background:var(--red)"></div></div>
+                <div class="coef-or risk">1.223***</div>
+              </li>
+              <li class="coef-item">
+                <div class="coef-name">Trust ChatGPT Information <span class="coef-dir risk">↑ Risk</span></div>
+                <div class="coef-bar-outer"><div class="coef-bar-inner" style="width:76%;background:var(--red)"></div></div>
+                <div class="coef-or risk">1.176***</div>
+              </li>
+              <li class="coef-item">
+                <div class="coef-name">Use ChatGPT for Assignments <span class="coef-dir risk">↑ Risk</span></div>
+                <div class="coef-bar-outer"><div class="coef-bar-inner" style="width:38%;background:var(--gold)"></div></div>
+                <div class="coef-or" style="color:var(--gold)">1.064**</div>
+              </li>
+              <li class="coef-item">
+                <div class="coef-name">Use AI for Images <span class="coef-dir risk">↑ Risk</span></div>
+                <div class="coef-bar-outer"><div class="coef-bar-inner" style="width:26%;background:var(--gold)"></div></div>
+                <div class="coef-or" style="color:var(--gold)">1.044*</div>
+              </li>
+              <li class="coef-item">
+                <div class="coef-name" style="color:var(--green)">Knowledge of AI Tools <span class="coef-dir prot">↓ Protective</span></div>
+                <div class="coef-bar-outer"><div class="coef-bar-inner" style="width:60%;background:var(--green)"></div></div>
+                <div class="coef-or prot">0.911***</div>
+              </li>
+              <li class="coef-item">
+                <div class="coef-name" style="color:var(--green)">AI Improves Academic Performance <span class="coef-dir prot">↓ Protective</span></div>
+                <div class="coef-bar-outer"><div class="coef-bar-inner" style="width:42%;background:var(--green)"></div></div>
+                <div class="coef-or prot">0.945**</div>
+              </li>
+            </ul>
+            <div style="font-size:10px;color:var(--silver);margin-top:12px;font-family:'IBM Plex Mono',monospace">
+              *** p&lt;0.001 &nbsp;|&nbsp; ** p&lt;0.01 &nbsp;|&nbsp; * p&lt;0.05
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-head">
+          <div class="chart-label">Figure 5.1 — Torres-Diaz et al. (2025) · Binary Logistic Regression</div>
+          <div class="chart-title">Odds Ratio Forest Plot — Plagiarism Predictors</div>
+        </div>
+        <div class="chart-body">
+          <div class="chart-wrap h340"><canvas id="c6"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 6: EDUCATOR CONCERNS ══ -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <span class="section-title">Educator & Institutional Perspectives</span>
+      </div>
+      <p class="section-desc">Survey data sourced from Leong & Zhang (2025), n=50 educators and n=100 students. Concerns reflect perceptions of AI-driven plagiarism detection systems across various academic disciplines.</p>
+
+      <div class="charts-2col">
+        <div class="chart-card">
+          <div class="chart-head">
+            <div class="chart-label">Figure 6.1 — Leong & Zhang (2025) · n=50 Educators</div>
+            <div class="chart-title">Educator Concerns About AI Detection</div>
+          </div>
+          <div class="chart-body">
+            <div class="chart-wrap h260"><canvas id="c7"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div class="chart-label">Figure 6.2 — Balalle & Pannilage (2025) · 25 Articles</div>
+            <div class="chart-title">Most-Cited Papers in AI & Academic Integrity</div>
+          </div>
+          <div class="chart-body">
+            <div class="chart-wrap h260"><canvas id="c8"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 7: KEY INSIGHTS ══ -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <span class="section-title">Synthesised Research Insights</span>
+      </div>
+      <p class="section-desc">The following insights are derived through cross-source synthesis of all five studies and represent the most critical, evidence-backed conclusions relevant to the thesis that AI strengthens academic integrity.</p>
+
+      <div class="insights-grid">
+        <div class="insight-item">
+          <div class="insight-num">INSIGHT 01</div>
+          <span class="insight-stat">OR = 0.911</span>
+          <div class="insight-title">AI Literacy is the Strongest Protective Factor</div>
+          <div class="insight-body">Students with greater knowledge of AI tools show significantly lower plagiarism odds (p&lt;0.001). Digital literacy programmes represent the most evidence-backed institutional intervention. <em>— Torres-Diaz et al. (2025)</em></div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-num">INSIGHT 02</div>
+          <span class="insight-stat">3× Gap</span>
+          <div class="insight-title">Deep Learning Outperforms Traditional Detection</div>
+          <div class="insight-body">Copyleaks detects 75% of AI-generated content vs. Turnitin's 25% — a threefold difference that directly supports investment in AI-powered detection tools. <em>— Leong & Zhang (2025)</em></div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-num">INSIGHT 03</div>
+          <span class="insight-stat">52%</span>
+          <div class="insight-title">Complex Paraphrasing Remains a Critical Gap</div>
+          <div class="insight-body">Even the most advanced AI tools detect only 52% of complex paraphrased content — the most common student evasion strategy — necessitating continuous R&D and human oversight. <em>— Leong & Zhang (2025)</em></div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-num">INSIGHT 04</div>
+          <span class="insight-stat">95.5%</span>
+          <div class="insight-title">Bans Are Ineffective — Education Is Essential</div>
+          <div class="insight-body">Only 4.5% of students have never used AI tools academically. Prohibitive approaches are therefore impractical; ethical AI education is the only viable long-term strategy. <em>— Torres-Diaz et al. (2025)</em></div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-num">INSIGHT 05</div>
+          <span class="insight-stat">↑ Fastest</span>
+          <div class="insight-title">AI Bypassers: The Emerging Frontier Threat</div>
+          <div class="insight-body">AI humaniser tools that deliberately alter AI-generated text to evade detection are now the fastest-growing form of academic misconduct, prompting Turnitin to deploy dedicated bypass detection. <em>— Chechitelli / Turnitin (2025)</em></div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-num">INSIGHT 06</div>
+          <span class="insight-stat">5 of 5</span>
+          <div class="insight-title">Institutional Policy: The Universal Recommendation</div>
+          <div class="insight-body">All five sources independently conclude that clear, explicit AI use policies are the single most critical institutional action needed to strengthen academic integrity in higher education.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- ══ FOOTER ══ -->
+  <div class="footer">
+    <div class="footer-left">
+      Research Analytics Report &nbsp;·&nbsp; "AI Strengthening Academic Integrity" &nbsp;·&nbsp; Undergraduate Research Paper · 2025<br>
+      Sources: Balalle & Pannilage · Leong & Zhang · K.B. & O.E.-G. · Torres-Diaz et al. · Chechitelli / Turnitin
+    </div>
+    <div class="footer-right">5 Sources &nbsp;·&nbsp; All 2025 &nbsp;·&nbsp; Peer-Reviewed</div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// Chart defaults — professional, muted palette
+Chart.defaults.color = '#4a6572';
+Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+Chart.defaults.font.size = 11;
+
+const navy  = '#0d1b2a', steel = '#2e4057', slate = '#4a6572';
+const gold  = '#b08d57', teal  = '#1a7a7a', green = '#2e7d4f';
+const red   = '#c0392b', silver= '#8fa3b0', border= '#dce8ef';
+const frost = '#eef4f8';
+
+const grid = { color: border, drawBorder: false };
+
+// ── C1: Grouped bar — detection by content type
+new Chart(document.getElementById('c1'), {
+  type: 'bar',
+  data: {
+    labels: ['Direct Copy', 'Paraphrase', 'AI-Generated'],
+    datasets: [
+      { label: 'Turnitin', data: [85,40,25], backgroundColor: navy+'cc', borderColor: navy, borderWidth: 1.5, borderRadius: 3 },
+      { label: 'Grammarly', data: [82,45,30], backgroundColor: gold+'cc', borderColor: gold, borderWidth: 1.5, borderRadius: 3 },
+      { label: 'Copyleaks', data: [92,75,75], backgroundColor: teal+'cc', borderColor: teal, borderWidth: 1.5, borderRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 16, font: { size: 11 } } } },
+    scales: {
+      y: { grid, min: 0, max: 100, ticks: { callback: v => v + '%' }, title: { display: true, text: 'Detection Rate (%)', color: slate, font: { size: 10 } } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── C2: Radar
+new Chart(document.getElementById('c2'), {
+  type: 'radar',
+  data: {
+    labels: ['Overall Accuracy', 'Direct Copy', 'Paraphrase', 'AI Detection', 'Report Speed', 'Low False Pos.'],
+    datasets: [
+      { label: 'Turnitin', data: [85,85,40,25,80,95], borderColor: navy, backgroundColor: navy+'22', pointBackgroundColor: navy, borderWidth: 1.5, pointRadius: 3 },
+      { label: 'Grammarly', data: [82,82,45,30,92,94], borderColor: gold, backgroundColor: gold+'22', pointBackgroundColor: gold, borderWidth: 1.5, pointRadius: 3 },
+      { label: 'Copyleaks', data: [92,92,75,75,68,92], borderColor: teal, backgroundColor: teal+'22', pointBackgroundColor: teal, borderWidth: 1.5, pointRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 16, font: { size: 11 } } } },
+    scales: {
+      r: {
+        grid: { color: border },
+        pointLabels: { font: { size: 10 }, color: slate },
+        ticks: { display: false, stepSize: 20 },
+        min: 0, max: 100
+      }
+    }
+  }
+});
+
+// ── C3: Scatter — Accuracy vs FP
+new Chart(document.getElementById('c3'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: 'Turnitin',   data: [{ x: 85, y: 5,  r: 7  }], backgroundColor: navy+'cc', borderColor: navy, borderWidth: 2 },
+      { label: 'Grammarly',  data: [{ x: 82, y: 6,  r: 9  }], backgroundColor: gold+'cc', borderColor: gold, borderWidth: 2 },
+      { label: 'Copyleaks',  data: [{ x: 92, y: 8,  r: 16 }], backgroundColor: teal+'cc', borderColor: teal, borderWidth: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { boxWidth: 10, padding: 16, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: Accuracy ${ctx.raw.x}%, False Pos. ${ctx.raw.y}%` } }
+    },
+    scales: {
+      x: { grid, min: 78, max: 96, title: { display: true, text: 'Overall Accuracy (%)', color: slate, font: { size: 10 } } },
+      y: { grid, min: 3,  max: 11, title: { display: true, text: 'False Positive Rate (%)', color: slate, font: { size: 10 } } }
+    }
+  }
+});
+
+// ── C4: Doughnut — Tool preference
+new Chart(document.getElementById('c4'), {
+  type: 'doughnut',
+  data: {
+    labels: ['ChatGPT', 'Gemini', 'Copilot', 'Claude AI', 'Others / None'],
+    datasets: [{
+      data: [71.3, 10.2, 8.5, 5.5, 4.5],
+      backgroundColor: [navy+'ee', steel+'ee', gold+'ee', teal+'ee', silver+'ee'],
+      borderColor: '#fff',
+      borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { boxWidth: 12, padding: 14, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw}%` } }
+    },
+    cutout: '62%'
+  }
+});
+
+// ── C5: Horizontal bar — AI usage by task
+new Chart(document.getElementById('c5'), {
+  type: 'bar',
+  data: {
+    labels: ['AI Writing Texts', 'Perceived AI Performance Benefit', 'Trust in ChatGPT', 'AI Math Problems', 'AI Music Gen.', 'Reporting to Professor'],
+    datasets: [{
+      label: 'Mean Score (0–9)',
+      data: [4.87, 5.52, 4.21, 4.04, 1.95, 2.09],
+      backgroundColor: [navy+'cc', green+'cc', gold+'cc', steel+'cc', silver+'cc', red+'cc'],
+      borderColor:      [navy,      green,      gold,      steel,      silver,      red],
+      borderWidth: 1.5, borderRadius: 3
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid, min: 0, max: 7, title: { display: true, text: 'Mean Score (0–9 scale)', color: slate, font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// ── C6: Forest plot — Odds Ratios
+new Chart(document.getElementById('c6'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'Report ChatGPT to Professor ↑',
+      'Trust ChatGPT Information ↑',
+      'Use ChatGPT for Assignments ↑',
+      'Use AI for Images ↑',
+      'Use AI for Mathematics ↑',
+      'Use AI for Music ↑',
+      'Age ↑',
+      'AI Improves Performance ↓',
+      'Knowledge of AI Tools ↓'
+    ],
+    datasets: [{
+      label: 'Odds Ratio (OR)',
+      data: [1.223, 1.176, 1.064, 1.044, 1.043, 1.038, 1.034, 0.945, 0.911],
+      backgroundColor: [red+'cc',red+'cc',gold+'cc',gold+'cc',gold+'cc',gold+'cc',gold+'cc',green+'cc',green+'cc'],
+      borderColor:     [red,     red,     gold,     gold,     gold,     gold,     gold,     green,     green],
+      borderWidth: 1.5, borderRadius: 3
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `OR = ${ctx.raw} · ${ctx.raw > 1 ? 'Increases plagiarism risk' : 'Reduces plagiarism risk'}` } }
+    },
+    scales: {
+      x: { grid, min: 0.85, max: 1.28, title: { display: true, text: 'Odds Ratio (OR = 1.0 represents no effect)', color: slate, font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// ── C7: Educator Concerns Bar
+new Chart(document.getElementById('c7'), {
+  type: 'bar',
+  data: {
+    labels: ['Accuracy / False Positives', 'Privacy & Data Protection', 'Over-Reliance on AI', 'Fairness & Algorithmic Bias'],
+    datasets: [{
+      label: '% of Educators',
+      data: [43, 25, 20, 12],
+      backgroundColor: [red+'cc', steel+'cc', gold+'cc', teal+'cc'],
+      borderColor: [red, steel, gold, teal],
+      borderWidth: 1.5, borderRadius: 3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid, max: 50, ticks: { callback: v => v + '%' }, title: { display: true, text: '% of Respondents (n=50)', color: slate, font: { size: 10 } } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// ── C8: Citation count
+new Chart(document.getElementById('c8'), {
+  type: 'bar',
+  data: {
+    labels: ['Cotton (2024)', 'Sullivan (2023)', 'Crawford et al. (2023)', 'Reiss (2021)', 'Currie (2023)', 'Bin-Nashwan (2023)'],
+    datasets: [{
+      label: 'Citation Count',
+      data: [755, 221, 188, 61, 46, 44],
+      backgroundColor: [navy+'ee', steel+'cc', gold+'cc', teal+'cc', slate+'cc', silver+'cc'],
+      borderColor: [navy, steel, gold, teal, slate, silver],
+      borderWidth: 1.5, borderRadius: 3
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid, title: { display: true, text: 'Number of Citations', color: slate, font: { size: 10 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
